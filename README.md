@@ -48,14 +48,14 @@ Below is an overview of RGB-D datasets and their ground truth assets compared wi
 HR and LR represent High Resolution and Low Resolution respectively, and are available for a subset of 2,257 captures of 841 unique
 scenes.
 
-<img width="815" alt="Screen Shot 2021-10-04 at 10 31 12" src="https://media.github.pie.apple.com/user/69097/files/3ddf9a00-24fe-11ec-8638-1e883c5a093f">
+![image](https://user-images.githubusercontent.com/7753049/144108117-b789a5be-cc08-44f0-a76c-f1549c59825e.png)
 
 
 ## Data collection
 
 In the figure below, we provide  (a) illustration of iPad Pro scanning set up. (b) mesh overlay to assist data collection with iPad Pro. (c) example of one of the scan patterns captured with the iPad pro, the red markers show the chosen locations of the stationary laser scanner in that room.
 
-<img width="999" alt="Screen Shot 2021-09-29 at 23 12 07" src="https://media.github.pie.apple.com/user/69097/files/b2bb7880-217a-11ec-9e7c-b23dce063c3f">
+![image](https://user-images.githubusercontent.com/7753049/144108161-0ae7ba6a-305f-4a22-93b1-0b2d1e78154e.png)
 
 ## Data download
 
