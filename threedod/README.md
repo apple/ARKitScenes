@@ -109,6 +109,7 @@ python data_prepare_offline.py \
 --scene_id 47331606 \
 --gt_path ../sample_data/47331606/47331606_3dod_annotation.json \
 --output_dir ../sample_data/offline_prepared_data/ \
+--vis
 ```
 The codes go through the video and accumulate the point cloud in each frame with a consistent coordinate system ("world coordinate") by leveraging intrinsic and extrinsic camera information. The label is in the same "world coordinate".
 
