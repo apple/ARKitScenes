@@ -30,6 +30,7 @@ threedod/
 
 Run below command to install relevant packages. This will create a venv/ folder in base directory
 ```
+cd threedod
 bash python_venv_setup.sh
 ```
 
