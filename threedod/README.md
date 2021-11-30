@@ -68,9 +68,10 @@ ARKitScenes/threedod/sample_data/40753679/
 
 To view 3d bounding box annotations on a mesh, you can run below script:
 ```
-python benchmark_scripts/show_3d_bbox_annotation.py \
-       -f sample_data/47331606/47331606_3dod_mesh.ply \
-       -a sample_data/47331606/47331606_3dod_annotation.json 
+cd ./threedod/benchmark_scripts
+python show_3d_bbox_annotation.py \
+       -f /tmp/raw_ARKitScenes/3dod/Training/41254925/41254925_3dod_mesh.ply \
+       -a /tmp/raw_ARKitScenes/3dod/Training/41254925/41254925_3dod_annotation.json
 ```
 
 A vtk screen like below will pop up, showing our annotated 3d bounding boxes drawn on a color mesh.
