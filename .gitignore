@@ -1,0 +1,6 @@
+.idea
+venv
+*pyc
+online_prepared_data
+offline_prepared_data
+threedod/sample_data
