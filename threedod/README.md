@@ -79,9 +79,9 @@ ARKitScenes/threedod/sample_data
 
 Then run below script:
 ```
-python3 threedod/benchmark_scripts/show_3d_bbox_annotation.py \
-        -f threedod/sample_data/47331606/47331606_3dod_mesh.ply \
-        -a threedod/sample_data/47331606/47331606_3dod_annotation.json
+python benchmark_scripts/show_3d_bbox_annotation.py \
+       -f sample_data/47331606/47331606_3dod_mesh.ply \
+       -a sample_data/47331606/47331606_3dod_annotation.json 
 ```
 
 A vtk screen like below will pop up, showing our annotated 3d bounding boxes drawn on a color mesh.
