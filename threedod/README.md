@@ -98,7 +98,7 @@ python data_prepare_offline.py \
        --data_root /tmp/raw_ARKitScenes/3dod/Training/ \
        --scene_id 41254925 \
        --gt_path /tmp/raw_ARKitScenes/3dod/Training/41254925/41254925_3dod_annotation.json \
-       --output_dir ../sample_data/online_prepared_data/ \
+       --output_dir /tmp/raw_ARKitScenes/3dod/Training/41254925/41254925_offline_prepared_data/ \
        --vis
 ```
 The codes go through the video and accumulate the point cloud in each frame with a consistent coordinate system ("world coordinate") by leveraging intrinsic and extrinsic camera information. The label is in the same "world coordinate".
@@ -141,7 +141,7 @@ python data_prepare_online.py \
        --data_root /tmp/raw_ARKitScenes/3dod/Training/ \
        --scene_id 41254925 \
        --gt_path /tmp/raw_ARKitScenes/3dod/Training/41254925/41254925_3dod_annotation.json \
-       --output_dir ../sample_data/online_prepared_data/ \
+       --output_dir /tmp/raw_ARKitScenes/3dod/Training/41254925/41254925_online_prepared_data/ \
        --vis
 ```
 
@@ -169,7 +169,10 @@ The command will output two folders for point cloud data and label.
 After we get the point cloud data and box label, we provide the following example code we use to prepare for the votes supervision:
 ```sh
 cd ./threedod/benchmark_scripts
-python prepare_votes.py --vis
+python prepare_votes.py \
+       --data_path /tmp/raw_ARKitScenes/3dod/Training/41254925/41254925_offline_prepared_data/41254925_data/41254925_pc.npy \
+       --label_path /tmp/raw_ARKitScenes/3dod/Training/41254925/41254925_offline_prepared_data/41254925_label/41254925_bbox.npy \
+       --vis
 ```
 
 As in our paper, we evaluated three state-of-the-art approaches: [VoteNet](https://github.com/facebookresearch/votenet), [H3DNet](https://github.com/zaiweizhang/H3DNet), [MLCVNet](https://github.com/NUAAXQ/MLCVNet). And we reported their performance of whole-scan 3D objection detection.
