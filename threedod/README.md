@@ -85,8 +85,7 @@ python3 threedod/benchmark_scripts/show_3d_bbox_annotation.py \
 
 A vtk screen like below will pop up, showing our annotated 3d bounding boxes drawn on a color mesh.
 
-<img width="600" alt="Screen Shot 2021-09-29 at 22 17 43" src="https://media.github.pie.apple.com/user/69097/files/3ffacf00-2173-11ec-9966-2ca5f8e7757d">
-
+![image](https://user-images.githubusercontent.com/7753049/144108366-23b25ff1-a6fb-4105-b3b2-ef11d6388ea7.png)
 
 # Annotation file format
 For each scan, an annotation json file is provided.
@@ -115,8 +114,7 @@ The codes go through the video and accumulate the point cloud in each frame with
 
 Below is a sample visualization.
 
-<img width="579" alt="Screen Shot 2021-11-02 at 12 03 10" src="https://media.github.pie.apple.com/user/69097/files/2e27a400-3bd7-11ec-9642-e1c6feb487b1">
-
+![image](https://user-images.githubusercontent.com/7753049/144108436-bfc982e7-d52e-44e0-87a3-420c2f2c9e1e.png)
 
 The command will output two folders for point cloud data and label. Notice the size of the bounding boxes saved is full-size rather than half-size as in votenet codes.
 ```buildoutcfg
@@ -158,8 +156,7 @@ python3 data_prepare_online.py \
 
 Below is a sample visualization.
 
-<img width="614" alt="Screen Shot 2021-11-02 at 12 04 24" src="https://media.github.pie.apple.com/user/69097/files/47c8eb80-3bd7-11ec-9136-f88414c6aa72">
-
+![image](https://user-images.githubusercontent.com/7753049/144108491-37f56ecf-32a6-4291-a4c5-e4a358dfe8f9.png)
 
 The command will output two folders for point cloud data and label.
 
