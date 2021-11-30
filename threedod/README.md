@@ -86,7 +86,7 @@ python benchmark_scripts/show_3d_bbox_annotation.py \
 
 A vtk screen like below will pop up, showing our annotated 3d bounding boxes drawn on a color mesh.
 
-![image](https://user-images.githubusercontent.com/7753049/144108366-23b25ff1-a6fb-4105-b3b2-ef11d6388ea7.png)
+![image](https://user-images.githubusercontent.com/7753049/144111638-8a12b74d-e051-4fdf-90a3-ca05305a3f20.png)
 
 # Annotation file format
 For each scan, an annotation json file is provided.
