@@ -104,12 +104,11 @@ For each scan, an annotation json file is provided.
 Run below command:
 ```sh
 cd ./threedod/benchmark_scripts
-python3 data_prepare_offline.py \
-        --data_root ../sample_data/ \
-        --scene_id 47331606 \
-        --gt_path ../sample_data/47331606/47331606_3dod_annotation.json \
-        --output_dir ../sample_data/offline_prepared_data/ \
-        --vis
+python data_prepare_offline.py \
+--data_root ../sample_data/ \
+--scene_id 47331606 \
+--gt_path ../sample_data/47331606/47331606_3dod_annotation.json \
+--output_dir ../sample_data/offline_prepared_data/ \
 ```
 The codes go through the video and accumulate the point cloud in each frame with a consistent coordinate system ("world coordinate") by leveraging intrinsic and extrinsic camera information. The label is in the same "world coordinate".
 
