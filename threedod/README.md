@@ -169,7 +169,7 @@ The command will output two folders for point cloud data and label.
 After we get the point cloud data and box label, we provide the following example code we use to prepare for the votes supervision:
 ```sh
 cd ./threedod/benchmark_scripts
-python3 prepare_votes.py --vis
+python prepare_votes.py --vis
 ```
 
 As in our paper, we evaluated three state-of-the-art approaches: [VoteNet](https://github.com/facebookresearch/votenet), [H3DNet](https://github.com/zaiweizhang/H3DNet), [MLCVNet](https://github.com/NUAAXQ/MLCVNet). And we reported their performance of whole-scan 3D objection detection.
