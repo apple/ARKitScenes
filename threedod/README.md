@@ -66,18 +66,7 @@ ARKitScenes/threedod/sample_data/40753679/
 
 # Visualizing 3DOD annotations
 
-To view 3d bounding box annotations on a mesh, you can follow below steps:
-
-Unzip downloaded data into `ARKitScenes/threedod/sample_data` directory
-
-```buildoutcfg
-ARKitScenes/threedod/sample_data
-├── 47331606
-├── 41069022
-└── 41069023
-```
-
-Then run below script:
+To view 3d bounding box annotations on a mesh, you can run below script:
 ```
 python benchmark_scripts/show_3d_bbox_annotation.py \
        -f sample_data/47331606/47331606_3dod_mesh.ply \
