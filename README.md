@@ -4,6 +4,8 @@ This repo accompanies the research paper, [ARKitScenes - A Diverse Real-World Da
 Using Mobile RGB-D Data](https://openreview.net/forum?id=tjZjv_qh_CE) and contains the data, scripts to visualize 
 and process assets, and training code described in our paper.
 
+![image](https://user-images.githubusercontent.com/7753049/144107932-39b010fc-6111-4b13-9c68-57dd903d78c5.png)
+
 <img width="1418" alt="Screen Shot 2021-09-27 at 10 31 30" src="https://media.github.pie.apple.com/user/69097/files/25abd000-1f7e-11ec-8cda-d9b814e4418e">
 <img width="1418" alt="Screen Shot 2021-09-27 at 10 35 38" src="https://media.github.pie.apple.com/user/69097/files/ad91da00-1f7e-11ec-9ef2-4d545c94a0d5">
 
