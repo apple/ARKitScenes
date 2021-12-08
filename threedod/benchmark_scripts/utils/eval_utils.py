@@ -1,4 +1,3 @@
-# TODO: a lot...
 # Ref: https://raw.githubusercontent.com/rbgirshick/py-faster-rcnn/master/lib/datasets/voc_eval.py
 
 import numpy as np
