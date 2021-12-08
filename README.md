@@ -70,4 +70,6 @@ Here we provide the two tasks mentioned in our paper, namely, 3D Object Detectio
 ### [Depth upsampling](depth_upsampling/README.md)
 
 ## License
-This dataset is released with non-commercial creative commons license.
+The ARKitScenes dataset is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License. To view a copy of this license, visit https://creativecommons.org/licenses/by-nc-sa/4.0/.
+For queries regarding a commercial license, contact ARKitScenes-license@group.apple.com
+If you have any other questions raise an issue in the repository and contact ARKitScenes@group.apple.com
