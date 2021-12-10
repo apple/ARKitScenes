@@ -31,7 +31,7 @@ To download a specific video_id or series of video_ids, `download_data.py` expec
 the second argument the fold (i.e. Training/Validation) and video_id or series of video_ids.
 
 ```shell script
-python3 download_data.py [3dod/upsampling/raw] [Training/Validation] --video_id video_id1 video_id2 \
+python3 download_data.py [3dod/upsampling/raw] --split [Training/Validation] --video_id video_id1 video_id2 \
 --download_dir YOUR_DATA_FOLDER
 ```
 for example
