@@ -17,7 +17,7 @@ def raw_files(video_id, assets):
         elif asset == 'mov':
             file_names.append(f'{video_id}.mov')
         elif asset == 'mesh':
-            file_names.append(f'{video_id}_3dod_mesh.fly')
+            file_names.append(f'{video_id}_3dod_mesh.ply')
         elif asset == 'annotation':
             file_names.append(f'{video_id}_3dod_annotation.json')
         elif asset == 'lowres_wide.traj':
