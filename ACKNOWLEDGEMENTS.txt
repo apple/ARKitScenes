@@ -3,4 +3,4 @@ Acknowledgements
 Portions of this software may utilize the following copyrighted material, the
 use of which is hereby acknowledged.
 
-We would like thank VoteNet authors for releasing their code, some of which are adapted to this repo.
+We would like to thank VoteNet authors, which we refererred to (https://github.com/facebookresearch/votenet/blob/main/models/ap_helper.py) for mAP and recall calculation and  for the repository.
