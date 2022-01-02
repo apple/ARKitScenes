@@ -13,7 +13,6 @@ threedod/
         data_prepare_online.py      # scripts to prepare single-frame dataset
         demo_eval.py                # demo scripts to evaluate mAP and recall
         prepare_votes.py            # scripts to prepare votes supervision for some sota approaches (votenet, h3dnet, mlcvnet)
-        download_3dod_data.py       # scripts to download 3dod dataset
         show_3d_bbox_annotation.py  # scripts to show visualization of box with point cloud
         
         utils/    # folders with utility functions
@@ -24,6 +23,7 @@ threedod/
             visual_utils.py         # visualization
             tenFpsDataLoader.py     # dataloader for the raw data
             taxonomy.py             # categories we are training
+            rotation.py             # rotation related utility functions
 ```
 
 # Creating a virtual environment
