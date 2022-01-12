@@ -36,7 +36,7 @@ python3 download_data.py [3dod/upsampling/raw] --split [Training/Validation] --v
 ```
 for example
 ```shell script
-python3 download_data.py raw Training --video_id 41048190 \
+python3 download_data.py raw --split Training --video_id 41048190 \
 --download_dir /tmp/ARKitScenes/
 ```
 
