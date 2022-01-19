@@ -7,6 +7,10 @@ ARkitscense_url = 'https://docs-assets.developer.apple.com/ml-research/datasets/
 TRAINING = 'Training'
 VALIDATION = 'Validation'
 
+missing_3dod_assets_video_ids = ['47334522','47334523','42897421','45261582','47333152','47333155',
+                                 '48458535','48018733','47429677','48458541','42897848','47895482',
+                                 '47333960','47430089','42899148','42897612','42899153','42446164',
+                                 '48018149','47332198','47334515','45663223','45663226','45663227']
 
 def raw_files(video_id, assets):
     file_names = []
@@ -17,11 +21,14 @@ def raw_files(video_id, assets):
         elif asset == 'mov':
             file_names.append(f'{video_id}.mov')
         elif asset == 'mesh':
-            file_names.append(f'{video_id}_3dod_mesh.ply')
+            if video_id not in missing_3dod_assets_video_ids:
+                file_names.append(f'{video_id}_3dod_mesh.ply')
         elif asset == 'annotation':
-            file_names.append(f'{video_id}_3dod_annotation.json')
+            if video_id not in missing_3dod_assets_video_ids:
+                file_names.append(f'{video_id}_3dod_annotation.json')
         elif asset == 'lowres_wide.traj':
-            file_names.append('lowres_wide.traj')
+            if video_id not in missing_3dod_assets_video_ids:
+                file_names.append('lowres_wide.traj')
         else:
             raise Exception(f'No asset = {asset} in raw dataset')
     return file_names
@@ -69,17 +76,16 @@ def download_data(dataset,
                 if not keep_zip:
                     os.remove(dst_zip)
 
-    if dataset == 'upsampling':
-        meta_file = "metadata.csv"
-        url = f"{ARkitscense_url}/upsampling/{meta_file}"
-        dst_file = os.path.join(download_dir, dataset)
-        download_file(url, meta_file, dst_file)
+    meta_file = "metadata.csv"
+    url = f"{ARkitscense_url}/{dataset}/{meta_file}"
+    dst_file = os.path.join(download_dir, dataset)
+    download_file(url, meta_file, dst_file)
 
-        if VALIDATION in splits:
-            val_attributes_file = "val_attributes.csv"
-            url = f"{ARkitscense_url}/upsampling/{VALIDATION}/{val_attributes_file}"
-            dst_file = os.path.join(download_dir, dataset, VALIDATION)
-            download_file(url, val_attributes_file, dst_file)
+    if dataset == 'upsampling' and VALIDATION in splits:
+        val_attributes_file = "val_attributes.csv"
+        url = f"{ARkitscense_url}/upsampling/{VALIDATION}/{val_attributes_file}"
+        dst_file = os.path.join(download_dir, dataset, VALIDATION)
+        download_file(url, val_attributes_file, dst_file)
 
 
 if __name__ == "__main__":
