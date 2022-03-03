@@ -175,7 +175,7 @@ python prepare_votes.py \
        --vis
 ```
 
-As in our paper, we evaluated three state-of-the-art approaches: [VoteNet](https://github.com/facebookresearch/votenet), [H3DNet](https://github.com/zaiweizhang/H3DNet), [MLCVNet](https://github.com/NUAAXQ/MLCVNet). And we reported their performance of whole-scan 3D objection detection.
+As in our paper, we evaluated three state-of-the-art approaches: [VoteNet](https://github.com/facebookresearch/votenet), [H3DNet](https://github.com/zaiweizhang/H3DNet), [MLCVNet](https://github.com/NUAAXQ/MLCVNet). And we reported their performance of whole-scan 3D objection detection. The IOU threshold used in all experiments is 25% (Table 2 and Table 3) and they have been performed on the validation split. 
 
 | Whole-Scan | VoteNet  | H3DNet  | MLCVNet  |
 | :------:   | :------: | :-----: | :------: |
