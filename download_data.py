@@ -68,11 +68,11 @@ def download_room_scans_for_video(video_id, metadata, download_dir):
 
 def room_scans_for_visit_id(visit_id, download_dir):
     room_scan_to_visit_id_mapping_filename = "room_scan_mapping.csv"
-    room_scan_to_visit_id_mapping_url = f"{ARkitscense_url}/raw/meshes/{room_scan_to_visit_id_mapping_filename}"
+    room_scan_to_visit_id_mapping_url = f"{ARkitscense_url}/raw/room_scans/{room_scan_to_visit_id_mapping_filename}"
     if not download_file(room_scan_to_visit_id_mapping_url, room_scan_to_visit_id_mapping_filename, download_dir):
         print(
-            f"Error downloading room scan for video_id {video_id} - couldn't find {room_scan_to_visit_id_mapping_url}")
-        return
+            f"Error downloading room scan for visit_id {visit_id} - couldn't find {room_scan_to_visit_id_mapping_url}")
+        return []
 
     room_scan_to_visit_id_mapping_filepath = os.path.join(download_dir, room_scan_to_visit_id_mapping_filename)
     room_scan_to_visit_id_mapping = pd.read_csv(room_scan_to_visit_id_mapping_filepath)
@@ -94,15 +94,12 @@ def download_room_scan(room_scan_id, visit_id, download_dir):
     if not os.path.exists(room_scans_folder_path):
         os.makedirs(room_scans_folder_path)
 
-    room_scan_url = f"{ARkitscense_url}/raw/meshes/{visit_id}/{room_scan_filename}"
+    room_scan_url = f"{ARkitscense_url}/raw/room_scans/{visit_id}/{room_scan_filename}"
     download_file(room_scan_url, room_scan_filename, room_scans_folder_path)
 
 
 def get_metadata(dataset, download_dir):
     filename = "metadata.csv"
-    # TODO: Remove this, change raw metadata name back to the original one
-    if "raw" == dataset:
-        filename = "full_metadata.csv"
     url = f"{ARkitscense_url}/threedod/{filename}" if '3dod' == dataset else f"{ARkitscense_url}/{dataset}/{filename}"
     dst_folder = os.path.join(download_dir, dataset)
     dst_file = os.path.join(dst_folder, filename)
