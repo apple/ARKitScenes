@@ -8,7 +8,7 @@ ARkitscense_url = 'https://docs-assets.developer.apple.com/ml-research/datasets/
 TRAINING = 'Training'
 VALIDATION = 'Validation'
 HIGRES_DEPTH_ASSET_NAME = 'highres_depth'
-ROOM_SCANS_FOLDER = 'room_scans'
+POINT_CLOUDS_FOLDER = 'laser_scanner_point_clouds'
 
 missing_3dod_assets_video_ids = ['47334522','47334523','42897421','45261582','47333152','47333155',
                                  '48458535','48018733','47429677','48458541','42897848','47895482',
@@ -49,53 +49,55 @@ def download_file(url, file_name, dst):
     return True
 
 
-def download_room_scans_for_video(video_id, metadata, download_dir):
+def download_laser_scanner_point_clouds_for_video(video_id, metadata, download_dir):
     visit_id = metadata.loc[metadata['video_id'] == float(video_id), ['visit_id']].iat[0, 0]
-    has_room_scan = metadata.loc[metadata['video_id'] == float(video_id), ['has_room_scan']].iat[0, 0]
+    has_laser_scanner_point_clouds = metadata.loc[metadata['video_id'] == float(video_id),
+                                                  ['has_laser_scanner_point_clouds']].iat[0, 0]
     if math.isnan(visit_id) or not visit_id.is_integer():
         return
 
-    if not has_room_scan:
-        print(f"Room scan for video {video_id} is not available")
+    if not has_laser_scanner_point_clouds:
+        print(f"Laser scanner point clouds for video {video_id} are not available")
         return
 
     visit_id = int(visit_id)  # Expecting an 8 digit integer
-    room_scan_ids = room_scans_for_visit_id(visit_id, download_dir)
+    laser_scanner_point_clouds_ids = laser_scanner_point_clouds_for_visit_id(visit_id, download_dir)
 
-    for room_scan_id in room_scan_ids:
-        download_room_scan(room_scan_id, visit_id, download_dir)
+    for point_cloud_id in laser_scanner_point_clouds_ids:
+        download_laser_scanner_point_clouds(point_cloud_id, visit_id, download_dir)
 
 
-def room_scans_for_visit_id(visit_id, download_dir):
-    room_scan_to_visit_id_mapping_filename = "room_scan_mapping.csv"
-    room_scan_to_visit_id_mapping_url = f"{ARkitscense_url}/raw/room_scans/{room_scan_to_visit_id_mapping_filename}"
-    if not download_file(room_scan_to_visit_id_mapping_url, room_scan_to_visit_id_mapping_filename, download_dir):
+def laser_scanner_point_clouds_for_visit_id(visit_id, download_dir):
+    point_cloud_to_visit_id_mapping_filename = "laser_scanner_point_clouds_mapping.csv"
+    point_cloud_to_visit_id_mapping_url = \
+        f"{ARkitscense_url}/raw/laser_scanner_point_clouds/{point_cloud_to_visit_id_mapping_filename}"
+    if not download_file(point_cloud_to_visit_id_mapping_url, point_cloud_to_visit_id_mapping_filename, download_dir):
         print(
-            f"Error downloading room scan for visit_id {visit_id} - couldn't find {room_scan_to_visit_id_mapping_url}")
+            f"Error downloading point cloud for visit_id {visit_id} at location {point_cloud_to_visit_id_mapping_url}")
         return []
 
-    room_scan_to_visit_id_mapping_filepath = os.path.join(download_dir, room_scan_to_visit_id_mapping_filename)
-    room_scan_to_visit_id_mapping = pd.read_csv(room_scan_to_visit_id_mapping_filepath)
-    room_scan_ids = room_scan_to_visit_id_mapping.loc[
-        room_scan_to_visit_id_mapping['visit_id'] == visit_id, ["room_scan_id"]
+    point_cloud_to_visit_id_mapping_filepath = os.path.join(download_dir, point_cloud_to_visit_id_mapping_filename)
+    point_cloud_to_visit_id_mapping = pd.read_csv(point_cloud_to_visit_id_mapping_filepath)
+    point_cloud_ids = point_cloud_to_visit_id_mapping.loc[
+        point_cloud_to_visit_id_mapping['visit_id'] == visit_id, ["laser_scanner_point_clouds_id"]
     ]
-    room_scan_ids_list = [scan_id[0] for scan_id in room_scan_ids.values]
+    point_cloud_ids_list = [scan_id[0] for scan_id in point_cloud_ids.values]
 
-    return room_scan_ids_list
+    return point_cloud_ids_list
 
 
-def download_room_scan(room_scan_id, visit_id, download_dir):
-    room_scans_folder_path = os.path.join(download_dir, ROOM_SCANS_FOLDER, str(visit_id))
-    room_scan_filename = f"{room_scan_id}.ply"
-    room_scan_filepath = os.path.join(room_scans_folder_path, room_scan_filename)
-    if os.path.exists(room_scan_filepath):
+def download_laser_scanner_point_clouds(laser_scanner_point_cloud_id, visit_id, download_dir):
+    laser_scanner_point_clouds_folder_path = os.path.join(download_dir, POINT_CLOUDS_FOLDER, str(visit_id))
+    point_cloud_filename = f"{laser_scanner_point_cloud_id}.ply"
+    point_cloud_filepath = os.path.join(laser_scanner_point_clouds_folder_path, point_cloud_filename)
+    if os.path.exists(point_cloud_filepath):
         return
 
-    if not os.path.exists(room_scans_folder_path):
-        os.makedirs(room_scans_folder_path)
+    if not os.path.exists(laser_scanner_point_clouds_folder_path):
+        os.makedirs(laser_scanner_point_clouds_folder_path)
 
-    room_scan_url = f"{ARkitscense_url}/raw/room_scans/{visit_id}/{room_scan_filename}"
-    download_file(room_scan_url, room_scan_filename, room_scans_folder_path)
+    point_cloud_url = f"{ARkitscense_url}/raw/laser_scanner_point_clouds/{visit_id}/{point_cloud_filename}"
+    download_file(point_cloud_url, point_cloud_filename, laser_scanner_point_clouds_folder_path)
 
 
 def get_metadata(dataset, download_dir):
@@ -119,7 +121,7 @@ def download_data(dataset,
                   download_dir,
                   keep_zip,
                   raw_dataset_assets,
-                  should_download_room_scan,
+                  should_download_laser_scanner_point_cloud,
                   ):
     metadata = get_metadata(dataset, download_dir)
     if None is metadata:
@@ -144,8 +146,9 @@ def download_data(dataset,
             raise Exception(f'No such dataset = {dataset}')
         os.makedirs(dst_dir, exist_ok=True)
 
-        if should_download_room_scan and dataset == 'raw':  # Room scans only available for the raw dataset
-            download_room_scans_for_video(video_id, metadata, download_dir)
+        if should_download_laser_scanner_point_cloud and dataset == 'raw':
+            # Point clouds only available for the raw dataset
+            download_laser_scanner_point_clouds_for_video(video_id, metadata, download_dir)
 
         for file_name in file_names:
             dst_zip = os.path.join(dst_dir, file_name)
@@ -204,7 +207,7 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--download_room_scan",
+        "--download_laser_scanner_point_cloud",
         action='store_true'
     )
 
@@ -242,4 +245,4 @@ if __name__ == "__main__":
                   args.download_dir,
                   args.keep_zip,
                   args.raw_dataset_assets,
-                  args.download_room_scan)
+                  args.download_laser_scanner_point_cloud)
