@@ -10,15 +10,21 @@ VALIDATION = 'Validation'
 HIGRES_DEPTH_ASSET_NAME = 'highres_depth'
 POINT_CLOUDS_FOLDER = 'laser_scanner_point_clouds'
 
-missing_3dod_assets_video_ids = ['47334522','47334523','42897421','45261582','47333152','47333155',
-                                 '48458535','48018733','47429677','48458541','42897848','47895482',
-                                 '47333960','47430089','42899148','42897612','42899153','42446164',
-                                 '48018149','47332198','47334515','45663223','45663226','45663227']
+missing_3dod_assets_video_ids = ['47334522', '47334523', '42897421', '45261582', '47333152', '47333155',
+                                 '48458535', '48018733', '47429677', '48458541', '42897848', '47895482',
+                                 '47333960', '47430089', '42899148', '42897612', '42899153', '42446164',
+                                 '48018149', '47332198', '47334515', '45663223', '45663226', '45663227']
 
 
-def raw_files(video_id, assets):
+def raw_files(video_id, assets, metadata):
     file_names = []
     for asset in assets:
+        if HIGRES_DEPTH_ASSET_NAME == asset:
+            in_upsampling = metadata.loc[metadata['video_id'] == float(video_id), ['is_in_upsampling']].iat[0, 0]
+            if not in_upsampling:
+                print(f"Skipping asset {file_name} for video_id {video_id} - Video not in upsampling dataset")
+                continue  # highres_depth asset only available for video ids from upsampling dataset
+
         if asset in ['confidence', 'highres_depth', 'lowres_depth', 'lowres_wide', 'lowres_wide_intrinsics',
                      'ultrawide', 'ultrawide_intrinsics', 'vga_wide', 'vga_wide_intrinsics']:
             file_names.append(asset + '.zip')
@@ -50,14 +56,16 @@ def download_file(url, file_name, dst):
 
 
 def download_laser_scanner_point_clouds_for_video(video_id, metadata, download_dir):
-    visit_id = metadata.loc[metadata['video_id'] == float(video_id), ['visit_id']].iat[0, 0]
-    has_laser_scanner_point_clouds = metadata.loc[metadata['video_id'] == float(video_id),
-                                                  ['has_laser_scanner_point_clouds']].iat[0, 0]
-    if math.isnan(visit_id) or not visit_id.is_integer():
-        return
+    video_metadata = metadata.loc[metadata['video_id'] == float(video_id)]
+    visit_id = video_metadata['visit_id'].iat[0]
+    has_laser_scanner_point_clouds = video_metadata['has_laser_scanner_point_clouds'].iat[0]
 
     if not has_laser_scanner_point_clouds:
-        print(f"Laser scanner point clouds for video {video_id} are not available")
+        print(f"Warning: Laser scanner point clouds for video {video_id} are not available")
+        return
+
+    if math.isnan(visit_id) or not visit_id.is_integer():
+        print(f"Warning: Downloading laser scanner point clouds for video {video_id} failed - Bad visit id {visit_id}")
         return
 
     visit_id = int(visit_id)  # Expecting an 8 digit integer
@@ -69,12 +77,16 @@ def download_laser_scanner_point_clouds_for_video(video_id, metadata, download_d
 
 def laser_scanner_point_clouds_for_visit_id(visit_id, download_dir):
     point_cloud_to_visit_id_mapping_filename = "laser_scanner_point_clouds_mapping.csv"
-    point_cloud_to_visit_id_mapping_url = \
-        f"{ARkitscense_url}/raw/laser_scanner_point_clouds/{point_cloud_to_visit_id_mapping_filename}"
-    if not download_file(point_cloud_to_visit_id_mapping_url, point_cloud_to_visit_id_mapping_filename, download_dir):
-        print(
-            f"Error downloading point cloud for visit_id {visit_id} at location {point_cloud_to_visit_id_mapping_url}")
-        return []
+    if not os.path.exists(point_cloud_to_visit_id_mapping_filename):
+        point_cloud_to_visit_id_mapping_url = \
+            f"{ARkitscense_url}/raw/laser_scanner_point_clouds/{point_cloud_to_visit_id_mapping_filename}"
+        if not download_file(point_cloud_to_visit_id_mapping_url,
+                             point_cloud_to_visit_id_mapping_filename,
+                             download_dir):
+            print(
+                f"Error downloading point cloud for visit_id {visit_id} at location "
+                f"{point_cloud_to_visit_id_mapping_url}")
+            return []
 
     point_cloud_to_visit_id_mapping_filepath = os.path.join(download_dir, point_cloud_to_visit_id_mapping_filename)
     point_cloud_to_visit_id_mapping = pd.read_csv(point_cloud_to_visit_id_mapping_filepath)
@@ -93,8 +105,7 @@ def download_laser_scanner_point_clouds(laser_scanner_point_cloud_id, visit_id, 
     if os.path.exists(point_cloud_filepath):
         return
 
-    if not os.path.exists(laser_scanner_point_clouds_folder_path):
-        os.makedirs(laser_scanner_point_clouds_folder_path)
+    os.makedirs(laser_scanner_point_clouds_folder_path, exist_ok=True)
 
     point_cloud_url = f"{ARkitscense_url}/raw/laser_scanner_point_clouds/{visit_id}/{point_cloud_filename}"
     download_file(point_cloud_url, point_cloud_filename, laser_scanner_point_clouds_folder_path)
@@ -106,8 +117,8 @@ def get_metadata(dataset, download_dir):
     dst_folder = os.path.join(download_dir, dataset)
     dst_file = os.path.join(dst_folder, filename)
 
-    if not os.path.exists(dst_folder):
-        os.makedirs(dst_folder)
+    os.makedirs(dst_folder, exist_ok=True)
+
     if not download_file(url, filename, dst_folder):
         return
 
@@ -117,7 +128,7 @@ def get_metadata(dataset, download_dir):
 
 def download_data(dataset,
                   video_ids,
-                  splits,
+                  dataset_splits,
                   download_dir,
                   keep_zip,
                   raw_dataset_assets,
@@ -130,12 +141,12 @@ def download_data(dataset,
 
     download_dir = os.path.abspath(download_dir)
     for video_id in set(video_ids):
-        split = splits[video_ids.index(video_id)]
+        split = dataset_splits[video_ids.index(video_id)]
         dst_dir = os.path.join(download_dir, dataset, split)
         if dataset == 'raw':
             dst_dir = os.path.join(dst_dir, str(video_id))
             url_prefix = f"{ARkitscense_url}/raw/{split}/{video_id}" + "/{}"
-            file_names = raw_files(video_id, raw_dataset_assets)
+            file_names = raw_files(video_id, raw_dataset_assets, metadata)
         elif dataset == '3dod':
             url_prefix = f"{ARkitscense_url}/threedod/{split}" + "/{}"
             file_names = [f"{video_id}.zip", ]
@@ -153,11 +164,6 @@ def download_data(dataset,
         for file_name in file_names:
             dst_zip = os.path.join(dst_dir, file_name)
             url = url_prefix.format(file_name)
-            if HIGRES_DEPTH_ASSET_NAME in file_name:
-                in_upsampling = metadata.loc[metadata['video_id'] == float(video_id), ['is_in_upsampling']].iat[0, 0]
-                if not in_upsampling:
-                    print(f"Skipping asset {file_name} for video_id {video_id} - Video not in upsampling dataset")
-                    continue  # highres_depth asset only available for videos in upsampling dataset
 
             if download_file(url, file_name, dst_dir):
                 # unzipping data
@@ -216,7 +222,7 @@ if __name__ == "__main__":
         nargs='+',
         default=['mov', 'annotation', 'mesh', 'confidence', 'highres_depth', 'lowres_depth',
                  'lowres_wide.traj', 'lowres_wide', 'lowres_wide_intrinsics', 'ultrawide',
-                  'ultrawide_intrinsics', 'vga_wide', 'vga_wide_intrinsics']
+                 'ultrawide_intrinsics', 'vga_wide', 'vga_wide_intrinsics']
     )
 
     args = parser.parse_args()
