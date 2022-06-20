@@ -22,7 +22,7 @@ def raw_files(video_id, assets, metadata):
         if HIGRES_DEPTH_ASSET_NAME == asset:
             in_upsampling = metadata.loc[metadata['video_id'] == float(video_id), ['is_in_upsampling']].iat[0, 0]
             if not in_upsampling:
-                print(f"Skipping asset {file_name} for video_id {video_id} - Video not in upsampling dataset")
+                print(f"Skipping asset {asset} for video_id {video_id} - Video not in upsampling dataset")
                 continue  # highres_depth asset only available for video ids from upsampling dataset
 
         if asset in ['confidence', 'highres_depth', 'lowres_depth', 'lowres_wide', 'lowres_wide_intrinsics',

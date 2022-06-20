@@ -7,7 +7,7 @@ To download the data please follow the [data](../DATA.md) documentation
 
 ## Data organization and format of input data
 
-RAW dataset includes variety of assets that sampled in different rates, we can categorize the images assets to 4
+RAW dataset includes variety of assets that sampled in different rates, we can categorize the images assets to 5
 categories:
 1. `60FPS` - includes 3 low resolution assets that synchronize (no guarantee that all assets exist per timestamp)
    - `lowres_wide` - RGB images of the wide camera (256x192)
@@ -20,6 +20,7 @@ categories:
    - `ultrawide` - the RGB images of the ultra wide  camera (640x480)
 4. `30FPS` - include 1 VGA resolution asset from wide camera
    - `vga_wide` - the RGB images of the wide camera (640x480)
+5. `Per venue` - the high resolution laser scanner point clouds which were produced by FARO lidar scanners. There are multiple point clouds for each venue, taken from different locations to increase coverage. Please see the `has_laser_scanner_point_clouds` column of the metadata csv to check if those point-clouds are available, per video id. 
 
 In addition each RGB image include the intrinsic matrix information in a folder with the same name as the asset name with
 the suffix=`_intrinsics` (i.e. `lowres_wide_intrinsics`, `wide_intrinsics`, `ultrawide_intrinsics`, `vga_wide_intrinsics`)
