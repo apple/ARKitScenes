@@ -36,12 +36,12 @@ python3 download_data.py [3dod/upsampling/raw] --split [Training/Validation] --v
 ```
 for example
 ```shell script
-python3 download_data.py raw --split Training --video_id 41048190 \
+python3 download_data.py raw --split Training --video_id 47333462 \
 --download_dir /tmp/ARKitScenes/
 ```
 or
 ```shell script
-python3 download_data.py raw --split Training --video_id 41048190 \
+python3 download_data.py raw --split Training --video_id 47333462 \
 --download_dir /tmp/ARKitScenes/ --download_laser_scanner_point_cloud
 ```
 to download the laser scanner point-clouds (available only for the raw dataset)
