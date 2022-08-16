@@ -69,13 +69,12 @@ def download_file(url, file_name, dst):
 def unzip_file(file_name, dst, keep_zip=True):
     filepath = os.path.join(dst, file_name)
     print(f"Unzipping zip file {filepath}")
-    command = f"unzip -oq {filepath} -d {filepath[:-4]}.tmp"
+    command = f"unzip -oq {filepath} -d {dst}"
     try:
         subprocess.check_call(command, shell=True)
     except Exception as error:
         print(f'Error unzipping {filepath}, error: {error}')
         return False
-    os.rename(filepath[:-4] + ".tmp", filepath[:-4])
     if not keep_zip:
         os.remove(filepath)
     return True
@@ -186,22 +185,12 @@ def download_data(dataset,
             dst_path = os.path.join(dst_dir, file_name)
             url = url_prefix.format(file_name)
 
-            if not file_name.endswith('.zip'):
-                # target is not zip file
-                download_file(url, file_name, dst_dir)
+            if not file_name.endswith('.zip') or not os.path.isdir(dst_path[:-len('.zip')]):
+                download_file(url, dst_path, dst_dir)
             else:
-                # target is zip file
-                if not os.path.isdir(dst_path[:-4]) and not os.path.isfile(dst_path):
-                    # zip file and unzip folder do not exist => download + unzip
-                    if download_file(url, file_name, dst_dir):
-                        unzip_file(file_name, dst_dir, keep_zip)
-                elif not os.path.isdir(dst_path[:-4]) and os.path.isfile(dst_path):
-                    # zip file exist but unzip folder do not exist => unzip only
-                    print(f'WARNING: skipping download of existing zip file: {dst_path}')
-                    unzip_file(file_name, dst_dir, keep_zip)
-                else:
-                    # unzip folder exist
-                    print(f'WARNING: skipping download and unzip of target zip file: {dst_path}')
+                print(f'WARNING: skipping download of existing zip file: {dst_path}')
+            if file_name.endswith('.zip') and os.path.isfile(dst_path):
+                unzip_file(file_name, dst_dir, keep_zip)
 
     if dataset == 'upsampling' and VALIDATION in splits:
         val_attributes_file = "val_attributes.csv"
