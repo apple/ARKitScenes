@@ -250,13 +250,10 @@ if __name__ == "__main__":
     parser.add_argument(
         "--raw_dataset_assets",
         nargs='+',
-        default=default_raw_dataset_assets
+        choices=default_raw_dataset_assets
     )
 
     args = parser.parse_args()
-    for asset in args.raw_dataset_assets:
-        assert asset in default_raw_dataset_assets, \
-            f'{asset} is not in default dataset assets'
     assert args.video_id is not None or args.video_id_csv is not None, \
         'video_id or video_id_csv must be specified'
     assert args.video_id is None or args.video_id_csv is None, \
