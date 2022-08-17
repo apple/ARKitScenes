@@ -100,15 +100,15 @@ def laser_scanner_point_clouds_for_visit_id(visit_id, download_dir):
 
 def download_laser_scanner_point_clouds(laser_scanner_point_cloud_id, visit_id, download_dir):
     laser_scanner_point_clouds_folder_path = os.path.join(download_dir, POINT_CLOUDS_FOLDER, str(visit_id))
-    point_cloud_filename = f"{laser_scanner_point_cloud_id}.ply"
-    point_cloud_filepath = os.path.join(laser_scanner_point_clouds_folder_path, point_cloud_filename)
-    if os.path.exists(point_cloud_filepath):
-        return
-
     os.makedirs(laser_scanner_point_clouds_folder_path, exist_ok=True)
 
-    point_cloud_url = f"{ARkitscense_url}/raw/laser_scanner_point_clouds/{visit_id}/{point_cloud_filename}"
-    download_file(point_cloud_url, point_cloud_filename, laser_scanner_point_clouds_folder_path)
+    for extension in [".ply", "_pose.txt"]:
+        filename = f"{laser_scanner_point_cloud_id}{extension}"
+        filepath = os.path.join(laser_scanner_point_clouds_folder_path, filename)
+        if os.path.exists(filepath):
+            return
+        file_url = f"{ARkitscense_url}/raw/laser_scanner_point_clouds/{visit_id}/{filename}"
+        download_file(file_url, filename, laser_scanner_point_clouds_folder_path)
 
 
 def get_metadata(dataset, download_dir):
