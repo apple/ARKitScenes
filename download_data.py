@@ -10,6 +10,10 @@ VALIDATION = 'Validation'
 HIGRES_DEPTH_ASSET_NAME = 'highres_depth'
 POINT_CLOUDS_FOLDER = 'laser_scanner_point_clouds'
 
+default_raw_dataset_assets = ['mov', 'annotation', 'mesh', 'confidence', 'highres_depth', 'lowres_depth',
+                 'lowres_wide.traj', 'lowres_wide', 'lowres_wide_intrinsics', 'ultrawide',
+                 'ultrawide_intrinsics', 'vga_wide', 'vga_wide_intrinsics']
+
 missing_3dod_assets_video_ids = ['47334522', '47334523', '42897421', '45261582', '47333152', '47333155',
                                  '48458535', '48018733', '47429677', '48458541', '42897848', '47895482',
                                  '47333960', '47430089', '42899148', '42897612', '42899153', '42446164',
@@ -45,13 +49,34 @@ def raw_files(video_id, assets, metadata):
 
 
 def download_file(url, file_name, dst):
-    command = f"curl {url} -o {file_name} --fail"
-    try:
-        subprocess.check_call(command, shell=True, cwd=dst)
-    except Exception as error:
-        print(f'Error downloading {url}, error: {error}')
-        return False
+    os.makedirs(dst, exist_ok=True)
+    filepath = os.path.join(dst, file_name)
 
+    if not os.path.isfile(filepath):
+        command = f"curl {url} -o {file_name}.tmp --fail"
+        print(f"Downloading file {filepath}")
+        try:
+            subprocess.check_call(command, shell=True, cwd=dst)
+        except Exception as error:
+            print(f'Error downloading {url}, error: {error}')
+            return False
+        os.rename(filepath+".tmp", filepath)
+    else:
+        print(f'WARNING: skipping download of existing file: {filepath}')
+    return True
+
+
+def unzip_file(file_name, dst, keep_zip=True):
+    filepath = os.path.join(dst, file_name)
+    print(f"Unzipping zip file {filepath}")
+    command = f"unzip -oq {filepath} -d {dst}"
+    try:
+        subprocess.check_call(command, shell=True)
+    except Exception as error:
+        print(f'Error unzipping {filepath}, error: {error}')
+        return False
+    if not keep_zip:
+        os.remove(filepath)
     return True
 
 
@@ -117,8 +142,6 @@ def get_metadata(dataset, download_dir):
     dst_folder = os.path.join(download_dir, dataset)
     dst_file = os.path.join(dst_folder, filename)
 
-    os.makedirs(dst_folder, exist_ok=True)
-
     if not download_file(url, filename, dst_folder):
         return
 
@@ -155,23 +178,21 @@ def download_data(dataset,
             file_names = [f"{video_id}.zip", ]
         else:
             raise Exception(f'No such dataset = {dataset}')
-        os.makedirs(dst_dir, exist_ok=True)
 
         if should_download_laser_scanner_point_cloud and dataset == 'raw':
             # Point clouds only available for the raw dataset
             download_laser_scanner_point_clouds_for_video(video_id, metadata, download_dir)
 
         for file_name in file_names:
-            dst_zip = os.path.join(dst_dir, file_name)
+            dst_path = os.path.join(dst_dir, file_name)
             url = url_prefix.format(file_name)
 
-            if download_file(url, file_name, dst_dir):
-                # unzipping data
-                if file_name.endswith('.zip'):
-                    command = f"unzip -o {dst_zip} -d {dst_dir}"
-                    subprocess.check_call(command, shell=True)
-                    if not keep_zip:
-                        os.remove(dst_zip)
+            if not file_name.endswith('.zip') or not os.path.isdir(dst_path[:-len('.zip')]):
+                download_file(url, dst_path, dst_dir)
+            else:
+                print(f'WARNING: skipping download of existing zip file: {dst_path}')
+            if file_name.endswith('.zip') and os.path.isfile(dst_path):
+                unzip_file(file_name, dst_dir, keep_zip)
 
     if dataset == 'upsampling' and VALIDATION in splits:
         val_attributes_file = "val_attributes.csv"
@@ -220,18 +241,16 @@ if __name__ == "__main__":
     parser.add_argument(
         "--raw_dataset_assets",
         nargs='+',
-        default=['mov', 'annotation', 'mesh', 'confidence', 'highres_depth', 'lowres_depth',
-                 'lowres_wide.traj', 'lowres_wide', 'lowres_wide_intrinsics', 'ultrawide',
-                 'ultrawide_intrinsics', 'vga_wide', 'vga_wide_intrinsics']
+        choices=default_raw_dataset_assets
     )
 
     args = parser.parse_args()
-    if args.video_id is None and args.video_id_csv is None:
-        raise argparse.ArgumentError('video_id or video_id_csv must be specified')
-    elif args.video_id is not None and args.video_id_csv is not None:
-        raise argparse.ArgumentError('only video_id or video_id_csv must be specified')
-    if args.video_id is not None and args.split is None:
-        raise argparse.ArgumentError('given video_id the split argument must be specified')
+    assert args.video_id is not None or args.video_id_csv is not None, \
+        'video_id or video_id_csv must be specified'
+    assert args.video_id is None or args.video_id_csv is None, \
+        'only video_id or video_id_csv must be specified'
+    assert args.video_id is None or args.split is not None, \
+        'given video_id the split argument must be specified'
 
     if args.video_id is not None:
         video_ids_ = args.video_id
