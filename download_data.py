@@ -241,6 +241,7 @@ if __name__ == "__main__":
         if args.split is not None:
             df = df[df["fold"] == args.split]
         video_ids_ = df["video_id"].to_list()
+        video_ids_ = map(str, video_ids_)  # Expecting video id to be a string
         splits_ = df["fold"].to_list()
     else:
         raise Exception('No video ids specified')
