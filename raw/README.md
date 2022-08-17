@@ -20,7 +20,7 @@ categories:
    - `ultrawide` - the RGB images of the ultra wide  camera (640x480)
 4. `30FPS` - include 1 VGA resolution asset from wide camera
    - `vga_wide` - the RGB images of the wide camera (640x480)
-5. `Per venue` - the high resolution laser scanner point clouds which were produced by FARO lidar scanners. There are multiple point clouds for each venue, taken from different locations to increase coverage. Please see the `has_laser_scanner_point_clouds` column of the metadata csv to check if those point-clouds are available, per video id. 
+5. `Per venue` - the high resolution laser scanner point clouds which were produced by FARO lidar scanners. There are multiple point clouds for each venue, taken from different locations to increase coverage. Each scan includes 2 assets: RGBD point-cloud of the scan and transformation data used for registering multiple point-clouds. Please see the `has_laser_scanner_point_clouds` column of the metadata csv to check if those point-clouds are available, per video id. 
 
 In addition each RGB image include the intrinsic matrix information in a folder with the same name as the asset name with
 the suffix=`_intrinsics` (i.e. `lowres_wide_intrinsics`, `wide_intrinsics`, `ultrawide_intrinsics`, `vga_wide_intrinsics`)
