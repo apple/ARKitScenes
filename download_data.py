@@ -167,9 +167,14 @@ def download_data(dataset,
         split = dataset_splits[video_ids.index(video_id)]
         dst_dir = os.path.join(download_dir, dataset, split)
         if dataset == 'raw':
-            dst_dir = os.path.join(dst_dir, str(video_id))
-            url_prefix = f"{ARkitscense_url}/raw/{split}/{video_id}" + "/{}"
-            file_names = raw_files(video_id, raw_dataset_assets, metadata)
+            url_prefix = ""
+            file_names = []
+            if not raw_dataset_assets:
+                print(f"Warning: No raw assets given for video id {video_id}")
+            else:
+                dst_dir = os.path.join(dst_dir, str(video_id))
+                url_prefix = f"{ARkitscense_url}/raw/{split}/{video_id}" + "/{}"
+                file_names = raw_files(video_id, raw_dataset_assets, metadata)
         elif dataset == '3dod':
             url_prefix = f"{ARkitscense_url}/threedod/{split}" + "/{}"
             file_names = [f"{video_id}.zip", ]
