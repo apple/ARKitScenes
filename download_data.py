@@ -163,7 +163,7 @@ def download_data(dataset,
         return
 
     download_dir = os.path.abspath(download_dir)
-    for video_id in set(video_ids):
+    for video_id in sorted(set(video_ids)):
         split = dataset_splits[video_ids.index(video_id)]
         dst_dir = os.path.join(download_dir, dataset, split)
         if dataset == 'raw':
