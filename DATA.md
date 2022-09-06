@@ -20,7 +20,7 @@ Upsampling CSV path:
 ```
 ARKitScenes/depth_upsampling/upsampling_train_val_splits.csv
 ```
-Upsampling CSV path:
+Raw CSV path:
 ```
 ARKitScenes/raw/raw_train_val_splits.csv
 ```
