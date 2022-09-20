@@ -25,7 +25,7 @@ categories:
 In addition each RGB image include the intrinsic matrix information in a folder with the same name as the asset name with
 the suffix=`_intrinsics` (i.e. `lowres_wide_intrinsics`, `wide_intrinsics`, `ultrawide_intrinsics`, `vga_wide_intrinsics`)
 
-The 3dod dataset is a subset of the category 1 (10FPS),
+The 3dod dataset is a subset of the category 1 (60FPS),
 and depth upsampling dataset is subset of the categories 1 and 2.
 
 important: raw dataset and 3dod dataset created in a different time, this can lead to a slightly different `lowres_depth` and `confidence` assets between raw and 3dod datasets.
