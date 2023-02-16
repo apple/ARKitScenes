@@ -58,6 +58,20 @@ python3 download_data.py 3dod --video_id_csv threedod/3dod_train_val_splits.csv 
 --download_dir /tmp/raw_ARKitScenes/
 ```
 
+Please note that for raw data, you will need to specify the type(s) of data you would like to download.
+The choices are 
+```
+mov annotation mesh confidence highres_depth lowres_depth lowres_wide.traj lowres_wide lowres_wide_intrinsics ultrawide 
+ultrawide_intrinsics vga_wide vga_wide_intrinsics
+```
+
+for example
+```shell script
+python3 download_data.py raw --video_id_csv raw/raw_train_val_splits.csv --download_dir /tmp/ar_raw_all/ \
+--raw_dataset_assets mov annotation mesh confidence highres_depth lowres_depth lowres_wide.traj \
+lowres_wide lowres_wide_intrinsics ultrawide ultrawide_intrinsics vga_wide vga_wide_intrinsics
+```
+
 The data folder (i.e. `YOUR_DATA_DIR`) will includes two directories, `Training` and `Validation` which includes all the assets
 belonging to training and validation bin respectively.
 
