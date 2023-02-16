@@ -8,8 +8,6 @@ and process assets, and training code described in our paper.
 
 ![image](https://user-images.githubusercontent.com/7753049/144108052-6a1d3a67-3948-4ded-bd08-6f1572fdf97a.png)
 
-https://user-images.githubusercontent.com/7753049/145264511-73669f1f-cf27-4da9-8e81-8c002f3b3afa.mov
-
 ## Paper
 [ARKitScenes - A Diverse Real-World Dataset for 3D Indoor Scene Understanding 
 Using Mobile RGB-D Data](https://openreview.net/forum?id=tjZjv_qh_CE)
