@@ -1,4 +1,7 @@
+import cv2
 import numpy as np
+
+from utils.tenFpsDataLoader import TrajStringToMatrix
 
 
 def decide_pose(pose):
@@ -42,6 +45,24 @@ def rotate_pose(im, rot_index):
     return new_im
 
 
-# rotate image
-orientation_index = decide_pose(pose)
-im = rotate_pose(im, corr_max_index)
+# rectify image: case 1
+# scene-id: 41048143 downloaded by
+#   python download_data.py 3dod --split Training --video_id 41048143
+# the 1st line (frame#1) from lowres_wide.traj
+line = "1627.68140546 -1.5545600446434271 1.532901960141653 0.883467254271724 0.0450016 0.0506107 -0.000194237"
+traj_timestamp = line.split(" ")[0]
+pose = TrajStringToMatrix(line)[1]  # parse the pose matrix
+orientation_index = decide_pose(pose)  # index 2, means image should be rotated 180-deg
+print(orientation_index)
+# im = rotate_pose(im, orientation_index)  # choose frame#1, image will be rectified
+
+# rectify image: case 2
+# scene-id: 41048169
+#   python download_data.py 3dod --split Training --video_id 41048169
+# the 1st line (frame#1) from lowres_wide.traj
+line = "803.47236621 1.6851560664954446 -1.7402208764128138 -0.8469396625258023 0.0404551 0.0562208 -0.00155703"
+traj_timestamp = line.split(" ")[0]
+pose = TrajStringToMatrix(line)[1]  # parse the pose matrix
+orientation_index = decide_pose(pose)  # index 1, means image should be rotated 90-deg clockwise
+print(orientation_index)
+# im = rotate_pose(im, orientation_index)  # choose frame#1, image will be rectified
