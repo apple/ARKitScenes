@@ -273,8 +273,6 @@ class TenFpsDataLoader(object):
         # else:
         #     self.intrinsics = None
 
-
-
         self.frame_rate = frame_rate
         self.subsample = subsample
         self.with_color_image = with_color_image
