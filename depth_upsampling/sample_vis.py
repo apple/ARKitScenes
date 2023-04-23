@@ -33,7 +33,7 @@ def sample_vis(dataset_path: str, split: str, sample_id: str, max_depth):
     axes[1, 1].axis(False)
     img = axes[1, 1].imshow(sample[dataset_keys.LOW_RES_DEPTH_IMG][0], vmin=0, vmax=max_depth, cmap=plt.get_cmap('turbo'))
     fig.colorbar(img, ax=axes[1, 1])
-    axes[1, 0].set_title('Color and high res overlay')
+    axes[1, 0].set_title('Color and low res overlay')
     axes[1, 0].axis(False)
     axes[1, 0].imshow(image_chw_to_hwc(sample[dataset_keys.COLOR_IMG]/255))
     axes[1, 0].imshow(sample[dataset_keys.LOW_RES_DEPTH_IMG][0], vmin=0, vmax=max_depth, cmap=plt.get_cmap('turbo'), alpha=0.5)
