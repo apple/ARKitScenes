@@ -12,7 +12,7 @@ POINT_CLOUDS_FOLDER = 'laser_scanner_point_clouds'
 
 default_raw_dataset_assets = ['mov', 'annotation', 'mesh', 'confidence', 'highres_depth', 'lowres_depth',
                  'lowres_wide.traj', 'lowres_wide', 'lowres_wide_intrinsics', 'ultrawide',
-                 'ultrawide_intrinsics', 'vga_wide', 'vga_wide_intrinsics']
+                 'ultrawide_intrinsics', 'vga_wide', 'vga_wide_intrinsics', 'wide', 'wide_intrinsics']
 
 missing_3dod_assets_video_ids = ['47334522', '47334523', '42897421', '45261582', '47333152', '47333155',
                                  '48458535', '48018733', '47429677', '48458541', '42897848', '47895482',
@@ -30,7 +30,7 @@ def raw_files(video_id, assets, metadata):
                 continue  # highres_depth asset only available for video ids from upsampling dataset
 
         if asset in ['confidence', 'highres_depth', 'lowres_depth', 'lowres_wide', 'lowres_wide_intrinsics',
-                     'ultrawide', 'ultrawide_intrinsics', 'vga_wide', 'vga_wide_intrinsics']:
+                     'ultrawide', 'ultrawide_intrinsics', 'vga_wide', 'vga_wide_intrinsics', 'wide', 'wide_intrinsics']:
             file_names.append(asset + '.zip')
         elif asset == 'mov':
             file_names.append(f'{video_id}.mov')
