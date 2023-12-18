@@ -199,7 +199,7 @@ def download_data(dataset,
             if file_name.endswith('.zip') and os.path.isfile(dst_path):
                 unzip_file(file_name, dst_dir, keep_zip)
 
-    if dataset == 'upsampling' and VALIDATION in splits:
+    if dataset == 'upsampling' and VALIDATION in dataset_splits:
         val_attributes_file = "val_attributes.csv"
         url = f"{ARkitscense_url}/upsampling/{VALIDATION}/{val_attributes_file}"
         dst_file = os.path.join(download_dir, dataset, VALIDATION)
