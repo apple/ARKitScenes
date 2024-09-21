@@ -216,7 +216,8 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--split",
-        choices=["Training", "Validation"],
+        choices=[None, "Training", "Validation"],
+        default=None
     )
 
     parser.add_argument(
