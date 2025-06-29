@@ -1,0 +1,138 @@
+[tool.poetry]
+name = "depth-upsampling-3dod"
+version = "0.1.0"
+description = "Depth upsampling and 3D object detection project"
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [
+    { include = "depth_upsampling" },
+    { include = "threedod" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+numpy = "^1.20.3"
+opencv-python = "^4.5.1"
+pandas = "^1.3.3"
+matplotlib = "^3.4.3"
+torch = ">=1.9.1"
+torchvision = ">=0.10.1"
+tensorboard = "^2.0.0"
+addict = "^2.4.0"
+aiohttp = "^3.7.4"
+async-timeout = "^3.0.1"
+attrs = "^21.2.0"
+autobahn = "^21.3.1"
+Automat = "^20.2.0"
+cffi = "^1.14.6"
+chardet = "^4.0.0"
+constantly = "^15.1.0"
+cryptography = "^3.4.8"
+cycler = "^0.10.0"
+hyperlink = "^21.0.0"
+idna = "^3.2"
+incremental = "^21.3.0"
+joblib = "^1.0.1"
+kiwisolver = "^1.3.2"
+multidict = "^5.1.0"
+open3d = ">=0.13.0"
+Pillow = "^8.3.2"
+plyfile = "^0.7.4"
+pycparser = "^2.20"
+pyparsing = "^2.4.7"
+python-dateutil = "^2.8.2"
+pytz = "^2021.1"
+PyYAML = "^6.0"
+scikit-learn = "^1.0"
+scipy = "^1.7.1"
+six = "^1.16.0"
+threadpoolctl = "^2.2.0"
+tqdm = "^4.62.3"
+Twisted = "^21.7.0"
+txaio = "^21.2.1"
+typing-extensions = ">=4.0.0"
+vtk = "^9.0.3"
+wslink = "^1.0.7"
+yarl = "^1.6.3"
+zope-interface = "^5.4.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+pytest-cov = "^4.1.0"
+pytest-mock = "^3.11.0"
+
+
+[tool.poetry.scripts]
+test = "pytest:main"
+tests = "pytest:main"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--cov=depth_upsampling",
+    "--cov=threedod",
+    "--cov-branch",
+    "--cov-report=term-missing:skip-covered",
+    "--cov-report=html",
+    "--cov-report=xml",
+    "--cov-fail-under=80",
+]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "slow: Slow running tests",
+]
+filterwarnings = [
+    "error",
+    "ignore::UserWarning",
+    "ignore::DeprecationWarning",
+]
+
+[tool.coverage.run]
+source = ["depth_upsampling", "threedod"]
+branch = true
+parallel = true
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__init__.py",
+    "*/setup.py",
+    "*/conf.py",
+    "*/.venv/*",
+    "*/venv/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+show_missing = true
+skip_covered = true
+fail_under = 80
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.coverage.xml]
+output = "coverage.xml"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
